@@ -301,6 +301,34 @@ map["key"] = value;  //set a map
     - count()
     - Fold and reduce
 
+### Adding/Removing elements
+```kotlin
+val numbers = mutableListOf(1, 2, 3, 4)
+numbers.add(5)
+numbers.remove(3) 
+```
+### List Specific Operations
+- Retrieving elements by index
+    - elementAt(), first(), last()
+    - getOrElse()
+    - getOrNull()
+- Retrieving list parts:  numbers.subList(3, 6)
+- Finding element positions: numbers.indexOf(2)
+- Binary search in sorted lists: numbers.binarySearch("two")
+- Sorting
+
+### Set Specific Operations
+- union()
+- intersect()
+- subtract()
+
+### Map Specific Operations
+- Retrieving keys and values: [key]
+- Filtering
+- plus and minus operators
+- add element: put(key, value)
+- Removing entries: remove("one"), remove("one", 4)
+
 ## Traversing a map
 ```kotlin
 for ((k, v) in map) {
@@ -335,3 +363,79 @@ var a = 1
 var b = 2
 a = b.also { b = a }
 ```
+## Equality check
+- Structural equality: "=="
+    - a?.equals(b) ?: (b === null)
+- Referential equality (two references point to the same object): "==="
+- Floating point numbers equality
+
+## Elvis Operator
+```kotlin
+val l: Int = if (b != null) b.length else -1
+```
+can be
+```kotlin
+val l = b?.length ?: -1
+```
+
+## The !! Operator
+```kotlin
+val l = b!!.length
+```
+this will return a non-null value of b (e.g., a String in our example) or throw an NPE if b is null
+
+## Annotations
+Annotations are means of attaching metadata to code. To declare an annotation:
+```kotlin
+annotation class Fancy
+```
+## Scope Functions
+execute a block of code within the context of an object. 
+
+- let, can be used to invoke one or more functions on results of call chains. "::"
+```kotlin
+Person("Alice", 20, "Amsterdam").let {
+    println(it)
+    it.moveTo("London")
+    it.incrementAge()
+    println(it)
+}
+```
+- run, useful when your lambda contains both the object initialization and the computation of the return value.
+```kotlin
+val service = MultiportService("https://example.kotlinlang.org", 80)
+val result = service.run {
+    port = 8080
+    query(prepareRequest() + " to port $port")
+}
+```
+- with, alling functions on the context object without providing the lambda result. In the code, with can be read as “with this object, do the following.”
+```kotlin
+val numbers = mutableListOf("one", "two", "three")
+with(numbers) {
+    println("'with' is called with argument $this")
+    println("It contains $size elements")
+}
+```
+- apply, common case for apply is the object configuration. Such calls can be read as “apply the following assignments to the object.”
+```kotlin
+val adam = Person("Adam").apply {
+    age = 32
+    city = "London"        
+}
+```
+- also,  is good for performing some actions that take the context object as an argument. Use also for additional actions that don't alter the object, such as logging or printing debug information. Usually, you can remove the calls of also from the call chain without breaking the program logic.
+When you see also in the code, you can read it as “and also do the following”.
+```kotlin
+val numbers = mutableListOf("one", "two", "three")
+numbers
+    .also { println("The list elements before adding new one: $it") }
+    .add("four")
+```
+
+- takeIf
+- takeUnless
+
+### Return value
+- apply and also return the context object.
+- let, run, with return the lambda result.
