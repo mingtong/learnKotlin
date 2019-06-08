@@ -3,11 +3,14 @@
 - Differences from Java/C#.
 - Tricky
 
-## Basic
+## Tricky
 
 - Kotlin can run without a class (only a main function).
 - No ?: operator
 - Support nullable: Int?
+- Int? cast to Int
+- parameters in fun are defined with val by default.
+- 
 
 ## Data types
 - Int 32 bit,
